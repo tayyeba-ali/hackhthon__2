@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+sqlmodel
+pyjwt[cryptography]
+asyncpg
+aiosqlite
+pydantic-settings
+python-dotenv
+passlib[bcrypt]
+python-multipart
+email-validator

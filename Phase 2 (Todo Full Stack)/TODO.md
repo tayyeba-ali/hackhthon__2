@@ -1,0 +1,8 @@
+- [x] Update CSS variables in globals.css to new dark theme colors (convert hex to HSL)
+- [x] Adjust theme provider in theme.tsx to default to 'dark'
+- [x] Add utility classes for card gradients and shadows in globals.css
+- [x] Verify all elements use updated variables and maintain functionality
+- [x] Update app name from "TaskFlow Pro" to "TaskNova Pro" in Header component
+- [x] Implement new color scheme: background #1E1E2F, primary #5C6BC0, secondary #FFB74D
+- [x] Update metadata in layout.tsx to reflect TaskNova branding
+- [x] Ensure UI integrity - no layout changes, same font weight/size/position
