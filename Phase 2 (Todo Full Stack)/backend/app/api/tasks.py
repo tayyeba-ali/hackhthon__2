@@ -1,10 +1,5 @@
 from fastapi import APIRouter, HTTPException, Query, status
-from sqlmodel import select
-from typing import List, Optional
-from ..models.task import Task, TaskCreate, TaskUpdate
-from .deps import SessionDep, CurrentUserDep
-
-from fastapi import APIRouter, HTTPException, Query, status
+from pydantic import BaseModel
 from sqlmodel import select
 from typing import List, Optional
 from ..models.task import Task, TaskCreate, TaskUpdate
@@ -16,7 +11,7 @@ router = APIRouter()
 async def list_tasks(
     current_user: CurrentUserDep,
     session: SessionDep,
-    status: Optional[str] = Query(None, regex="^(all|pending|completed)$")
+    status: Optional[str] = Query(None, pattern="^(all|pending|completed)$")
 ):
     query = select(Task).where(Task.user_id == current_user)
 
@@ -85,17 +80,25 @@ async def delete_task(
     await session.commit()
     return None
 
+class ToggleCompleteRequest(BaseModel):
+    completed: Optional[bool] = None
+
 @router.patch("/{id}/complete", response_model=Task)
 async def toggle_complete(
     id: int,
     current_user: CurrentUserDep,
-    session: SessionDep
+    session: SessionDep,
+    data: Optional[ToggleCompleteRequest] = None
 ):
     task = await session.get(Task, id)
     if not task or task.user_id != current_user:
         raise HTTPException(status_code=404, detail="Task not found")
 
-    task.completed = not task.completed
+    if data and data.completed is not None:
+        task.completed = data.completed
+    else:
+        task.completed = not task.completed
+
     session.add(task)
     await session.commit()
     await session.refresh(task)

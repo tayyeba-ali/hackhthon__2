@@ -1,14 +1,14 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlmodel import SQLModel, Field
 from typing import Optional
 
 class TimestampMixin(SQLModel):
     created_at: datetime = Field(
-        default_factory=lambda: datetime.utcnow(),
+        default_factory=lambda: datetime.now(timezone.utc),
         nullable=False
     )
     updated_at: datetime = Field(
-        default_factory=lambda: datetime.utcnow(),
+        default_factory=lambda: datetime.now(timezone.utc),
         nullable=False,
-        sa_column_kwargs={"onupdate": lambda: datetime.utcnow()}
+        sa_column_kwargs={"onupdate": lambda: datetime.now(timezone.utc)}
     )
