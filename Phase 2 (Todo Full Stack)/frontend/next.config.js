@@ -7,7 +7,7 @@ const nextConfig = {
       { hostname: 'example.com' }
     ],
   },
-    typescript: {
+  typescript: {
     ignoreBuildErrors: true,
   },
   async headers() {
